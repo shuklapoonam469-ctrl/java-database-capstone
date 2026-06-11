@@ -20,7 +20,7 @@ Requests for server-rendered views are handled by Thymeleaf Controllers, which r
 Requests from API consumers are handled by REST Controllers, which process the input, call backend logic, and return responses in JSON format.
 These controllers serve as the entry points into the backend application logic, enforcing request validation and coordinating the request/response flow.
 
-3. Service Layer
+**3. Service Layer**
 All controllers delegate logic to the Service Layer, which acts as the heart of the backend system. This layer:
 
 Applies business rules and validations
@@ -28,28 +28,28 @@ Coordinates workflows across multiple entities (e.g., checking doctor availabili
 Ensures a clean separation between controller logic and data access
 By isolating business logic here, the application becomes more maintainable, testable, and easier to scale.
 
-4. Repository Layer
+**4. Repository Layer**
 The service layer communicates with the Repository Layer to perform data access operations. This layer includes two types of repositories:
 
 MySQL Repositories, which use Spring Data JPA to manage structured relational data like patients, doctors, appointments, and admin records.
 MongoDB Repository, which uses Spring Data MongoDB to manage document-based records like prescriptions.
 Repositories abstract the database access logic and expose a simple, declarative interface for fetching and persisting data.
 
-5. Database access
+**5. Database access**
 Each repository interfaces directly with the underlying database engine:
 
 MySQL stores all core entities that benefit from a normalized relational schema and constraints—such as users, roles, and appointments.
 MongoDB stores flexible and nested data structures, such as prescriptions, which may vary in format and allow for rapid schema evolution.
 This dual-database setup leverages the strengths of both structured and unstructured data storage approaches.
 
-6. Model binding
+**6. Model binding**
 Once data is retrieved from the database, it is mapped into Java model classes that the application can work with. This process is known as model binding.
 
 In the case of MySQL, data is converted into JPA entities, which represent rows in relational tables and are annotated with @Entity.
 For MongoDB, data is loaded into document objects, typically annotated with @Document, which map to BSON/JSON structures in collections.
 These model classes provide a consistent, object-oriented representation of the data across the application layers.
 
-7. Application models in use
+**7. Application models in use**
 Finally, the bound models are used in the response layer:
 
 In MVC flows, models are passed from the controller to Thymeleaf templates, where they are rendered as dynamic HTML for the browser.
