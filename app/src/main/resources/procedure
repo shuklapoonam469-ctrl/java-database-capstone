@@ -1,0 +1,61 @@
+DELIMITER $$
+
+CREATE PROCEDURE GetDailyAppointmentsReport(IN report_date DATE)
+BEGIN
+    SELECT 
+        d.id AS doctor_id,
+        d.name AS doctor_name,
+        d.specialty,
+        COUNT(a.id) AS total_appointments,
+        SUM(CASE WHEN a.status = 0 THEN 1 ELSE 0 END) AS scheduled_count,
+        SUM(CASE WHEN a.status = 1 THEN 1 ELSE 0 END) AS completed_count,
+        SUM(CASE WHEN a.status = 2 THEN 1 ELSE 0 END) AS cancelled_count
+    FROM doctor d
+    LEFT JOIN appointment a ON d.id = a.doctor_id 
+        AND DATE(a.appointment_time) = report_date
+    GROUP BY d.id, d.name, d.specialty
+    ORDER BY total_appointments DESC;
+END$$
+
+DELIMITER ;
+------
+DELIMITER $$
+
+CREATE PROCEDURE GetTopDoctorOfMonth(IN target_month INT, IN target_year INT)
+BEGIN
+    SELECT 
+        d.id AS doctor_id,
+        d.name AS doctor_name,
+        d.specialty,
+        COUNT(a.id) AS patients_seen
+    FROM doctor d
+    JOIN appointment a ON d.id = a.doctor_id
+    WHERE a.status = 1  -- Only counting completed appointments
+      AND MONTH(a.appointment_time) = target_month
+      AND YEAR(a.appointment_time) = target_year
+    GROUP BY d.id, d.name, d.specialty
+    ORDER BY patients_seen DESC
+    LIMIT 1;
+END$$
+------------
+DELIMITER $$
+
+CREATE PROCEDURE GetTopDoctorOfYear(IN target_year INT)
+BEGIN
+    SELECT 
+        d.id AS doctor_id,
+        d.name AS doctor_name,
+        d.specialty,
+        COUNT(a.id) AS total_patients_seen
+    FROM doctor d
+    JOIN appointment a ON d.id = a.doctor_id
+    WHERE a.status = 1  -- Only counting completed appointments
+      AND YEAR(a.appointment_time) = target_year
+    GROUP BY d.id, d.name, d.specialty
+    ORDER BY total_patients_seen DESC
+    LIMIT 1;
+END$$
+
+DELIMITER ;
+DELIMITER ;
+
