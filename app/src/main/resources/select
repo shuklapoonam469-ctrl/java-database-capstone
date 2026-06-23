@@ -1,0 +1,27 @@
+----Aggregate Appointments Status Count (Great for Dashboard Metrics)
+SELECT status, COUNT(*) as total_appointments 
+FROM appointment 
+GROUP BY status;
+-----Find Available Timings for a Specific Doctor
+SELECT d.name, d.specialty, dat.available_times 
+FROM doctor d
+JOIN doctor_available_times dat ON d.id = dat.doctor_id
+WHERE d.id = 1;
+
+----Fetch Complete Appointment Details (With Doctor and Patient Names)
+SELECT 
+    a.id AS appointment_id,
+    p.name AS patient_name,
+    d.name AS doctor_name,
+    d.specialty,
+    a.appointment_time,
+    CASE 
+        WHEN a.status = 0 THEN 'Scheduled'
+        WHEN a.status = 1 THEN 'Completed'
+        WHEN a.status = 2 THEN 'Cancelled'
+        ELSE 'Unknown'
+    END AS appointment_status
+FROM appointment a
+JOIN patient p ON a.patient_id = p.id
+JOIN doctor d ON a.doctor_id = d.id
+ORDER BY a.appointment_time ASC;
