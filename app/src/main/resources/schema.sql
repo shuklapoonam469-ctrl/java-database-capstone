@@ -45,3 +45,6 @@ CREATE TABLE appointment (
     CONSTRAINT fk_appointment_doctor FOREIGN KEY (doctor_id) REFERENCES doctor(id),
     CONSTRAINT fk_appointment_patient FOREIGN KEY (patient_id) REFERENCES patient(id)
 );
+--Adding unique contraint
+ALTER TABLE patient ADD CONSTRAINT unique_email UNIQUE (email);
+ALTER TABLE patient ADD CONSTRAINT unique_phone UNIQUE (phone);
