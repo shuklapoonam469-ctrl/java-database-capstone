@@ -106,4 +106,76 @@ with search, filter, and modal functionality.
     * Finish the structure by properly closing all tags.
 
  -->
+<!DOCTYPE html>
 
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="icon" type="image/png" th:href="@{/assets/images/logo/logo.png}" />
+
+    <title>Admin Dashboard</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/adminDashboard.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+
+    <script th:src="@{/js/render.js}" defer></script>
+    <script th:src="@{/js/util.js}" defer></script>
+    <script th:src="@{/js/header.js}" defer></script>
+    <script th:src="@{/js/footer.js}" defer></script>
+</head>
+
+<body onload="renderContent()">
+
+    <div class="container">
+        
+        <div class="wrapper">
+            
+            <div id="header"></div>
+            
+            <main class="main-content">
+                
+                <div class="dashboard-controls">
+                    <input type="text" id="searchBar" placeholder="Search doctors by name..." />
+                    
+                    <select id="timeFilter">
+                        <option value="">Select Time Slot</option>
+                        <option value="AM">Morning (AM)</option>
+                        <option value="PM">Afternoon (PM)</option>
+                    </select>
+
+                    <select id="specialtyFilter">
+                        <option value="">Filter By Specialty</option>
+                        <option value="Cardiologist">Cardiologist</option>
+                        <option value="Pediatrician">Pediatrician</option>
+                        <option value="Dermatologist">Dermatologist</option>
+                        <option value="Neurologist">Neurologist</option>
+                        <option value="Orthopedic">Orthopedic</option>
+                    </select>
+                </div>
+
+                <div id="content">
+                    </div>
+
+            </main>
+
+            <div id="footer"></div>
+
+        </div>
+    </div>
+
+    <div id="adminModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-button" onclick="document.getElementById('adminModal').style.display='none'">&times;</span>
+            <div id="modal-body">
+                </div>
+        </div>
+    </div>
+
+    <script type="module" th:src="@{/js/adminDashboard.js}" defer></script>
+    <script type="module" th:src="@{/js/doctorCard.js}" defer></script>
+
+</body>
+</html>
